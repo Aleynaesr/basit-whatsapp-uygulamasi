@@ -11,7 +11,6 @@ Not: Kullanmak isteyenler için, projede oda ekleme bulunmamakta denemek için v
 
 
 
-![simple-whatsapp-chat](https://user-images.githubusercontent.com/24223180/40419412-f333be9e-5e8d-11e8-8914-24ac10456e8b.png)
 
 ![whatsapp_simple](https://user-images.githubusercontent.com/24223180/40419129-06b3f7be-5e8d-11e8-84f4-77a36a1531b6.png)
 
