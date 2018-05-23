@@ -1,0 +1,155 @@
+﻿@model object
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(this.Model));
+    console.log(model);
+</script>
+
+<div class="container app" ng-controller="AgProgramlamaCtrl">
+    <div class="row app-one">
+        <div class="col-sm-4 side">
+            <div class="side-one">
+                <div class="row heading">
+                    <div class="col-sm-2 col-xs-2 heading-avatar">
+                        <div class="heading-avatar-icon">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png">            
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-xs-8" style="padding-top:8px">
+                        <p style="font-weight:700;font-size:15px">{{sessionMail}}</p>
+                    </div>
+                    <div class="col-sm-2 col-xs-2 heading-compose  pull-right">
+                        <i class="fa fa-comments fa-2x  pull-right"  ng-click="GonderilecekYerSetEt()" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row searchBox">
+                    <div class="col-sm-12 searchBox-inner">
+                        <div class="form-group has-feedback">
+                            <input id="searchText" type="text" class="form-control" name="searchText" ng-model="aranan" placeholder="Search">
+                        </div>
+                    </div>
+                </div>
+                <div class="row sideBar">
+                    <div class="row sideBar-body" ng-repeat="user in Users  | filter:aranan" ng-click="showMessagesUser(user)">
+                        <div class="col-sm-3 col-xs-3 sideBar-avatar">
+                            <div class="avatar-icon">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-xs-8 sideBar-main">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-8 sideBar-name">
+                                    <span class="name-meta">
+                                        {{user.email}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 col-xs-1" style="padding-top:15px">
+                            <p >{{user.gorummemisMesajSayisi}}</p>
+                        </div>
+                    </div>
+                    <div class="row sideBar-body" ng-repeat="group in Groups | filter:aranan"  ng-click="showMessagesGroup(group)">
+                        <div class="col-sm-3 col-xs-3 sideBar-avatar">
+                            <div class="avatar-icon">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                            </div>
+                        </div>
+                        <div class="col-sm-9 col-xs-9 sideBar-main">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-8 sideBar-name">
+                                    <span class="name-meta">
+                                        {{group.groupName}} &nbsp; (Grup)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="side-two">
+                <div class="row newMessage-heading">
+                    <div class="row newMessage-main">
+                        <div class="col-sm-2 col-xs-2 newMessage-back">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-sm-10 col-xs-10 newMessage-title">
+                            Broadcast Message Send
+                        </div>
+                    </div>
+                </div>
+                <div class="row compose-sideBar">
+                    <div class="row"  style="height:120px;">
+                        <div class="col-md-12" style="padding-left:15%;padding-top:30px">
+                            <textarea style="width:337px;height:80px" id="broadcastMessage"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="height:120px;">
+                        <div class="col-sm-3 col-xs-3 col-md-offset-5 reply-send" ng-click="messageSend()">
+                            <i class="fa fa-send fa-3x" aria-hidden="true"></i>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 conversation" ng-show="ilkAcilis">
+
+            <div class="row heading">
+                <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+                    <div class="heading-avatar-icon">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
+                    </div>
+                </div>
+                <div class="col-sm-8 col-xs-7 heading-name">
+                    <a class="heading-name-meta">
+                        {{Konusulan}}
+                    </a>
+                    <span class="heading-online">Online</span>
+                </div>
+            </div>
+            <div class="row message" id="conversation">
+                <div class="row message-previous">
+                    <div class="col-sm-12 previous">
+                        <a onclick="previous(this)" id="ankitjain28" name="20">
+                            Show Previous Message!
+                        </a>
+                    </div>
+                </div>
+                <div class="row message-body">
+                    <div class="{{ message.UserMail ===  sessionMail? 'col-sm-12 message-main-sender':'col-sm-12 message-main-receiver'}} "  ng-repeat="message in Model.messages">
+                        <div class="{{ message.UserMail ===  sessionMail ? 'sender':'receiver'}}">
+                            <div class="message-text" style="font-weight:700;color:{{message.UserMail ===  sessionMail ? '#5d4ecc':'#12a8b9'}}">
+                                {{message.UserMail}}
+                            </div>
+                            <div class="message-text">
+                                {{message.Message}}
+                            </div>
+                            <span class="message-time pull-right">
+                                {{message.SendTime  | mydate | date:'medium'}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row reply">
+                <div class="col-sm-1 col-xs-1 reply-emojis">
+                    <i class="fa fa-smile-o fa-2x"></i>
+                </div>
+                <div class="col-sm-9 col-xs-9 reply-main">
+                    <textarea class="form-control" style="max-width:100%" id="message"></textarea>
+                </div>
+                <div class="col-sm-1 col-xs-1 reply-send" ng-click="messageSend()">
+                    <i class="fa fa-send fa-2x" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 conversation" ng-show="!ilkAcilis">
+
+            <h2>Hoş Geldiniz</h2>
+
+        </div>
+    </div>
+</div>
